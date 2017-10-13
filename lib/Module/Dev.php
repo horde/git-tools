@@ -42,7 +42,7 @@ class Dev extends Base
         // ...and the arguments.
         $arguments = $config->getArguments();
 
-        // Exit early if we aren't actually calling any git related commands.
+        // Exit early if we aren't actually calling any dev related commands.
         if (array_shift($arguments) != 'dev' || !count($arguments)) {
             // Exit early if we didn't request any actual actions.
             return false;
@@ -52,9 +52,24 @@ class Dev extends Base
         case 'install':
             $this->_doInstallDev();
             return true;
+        case 'new':
+            $this->_doNewApp();
+            return true;
         }
     }
 
+    /**
+     * Create a new Horde App from skeleton
+     *
+     * @param  array $params  Configuration parameters.
+     */
+    protected function _doNewApp()
+    {
+        $params = $this->_params;
+        $action = new Action\Dev\NewApp($params, $this->_dependencies);
+        $action->run();
+
+    }
 
     /**
      * Perform linking of all repositories into the web_directory.
@@ -90,6 +105,22 @@ class Dev extends Base
                 array(
                     'action' => 'store_true',
                     'help'   => 'Copy files instead of linking.'
+                )
+            ),
+            new Horde_Argv_Option(
+                '',
+                '--author',
+                array(
+                    'action' => 'store',
+                    'help'   => 'Author string "First Last <email@foo.org>".'
+                )
+            ),
+            new Horde_Argv_Option(
+                '',
+                '--app-name',
+                array(
+                    'action' => 'store',
+                    'help'   => 'Name of the new application to create.'
                 )
             )
         );
@@ -165,7 +196,9 @@ class Dev extends Base
      */
     public function getActions()
     {
-        return array('install'  => 'Link/Install all repositories to the web directory.');
+        return array('install'  => 'Link/Install all repositories to the web directory.',
+            'new' => 'Create a new component'
+        );
     }
 
     /**
