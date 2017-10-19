@@ -22,10 +22,10 @@ class Callbacks
      * Links the Horde_Role files needed to detect "Horde" as a valid role
      * when using PEAR via Composer.
      *
-     * @param  Event  $event [description]
+     * @param  PackageEvent  $event [description]
      * @return [type]        [description]
      */
-    public static function linkHordeRole(Event $event)
+    public static function linkHordeRole(PackageEvent $event)
     {
         symlink(
             dirname(__FILE__) . '/../vendor/pear-pear.horde.org/Horde_Role/PEAR/Installer/Role/Horde.php',
@@ -41,10 +41,10 @@ class Callbacks
      * Unlinks the Horde_Role files needed to detect "Horde" as a valid role
      * when using PEAR via Composer.
      *
-     * @param  Event  $event [description]
+     * @param  PackageEvent  $event [description]
      * @return [type]        [description]
      */
-    public static function unlinkHordeRole(Event $event)
+    public static function unlinkHordeRole(PackageEvent $event)
     {
         unlink(dirname(__FILE__) . '/../vendor/pear/pear/PEAR/Installer/Role/Horde.php');
         unlink(dirname(__FILE__) . '/../vendor/pear/pear/PEAR/Installer/Role/Horde.xml');
